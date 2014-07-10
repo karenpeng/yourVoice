@@ -137,13 +137,10 @@ var effectModule = function(sound){
 }
 */
 //come on, forget about everything
-var mic;
-var pipe;
-var speaker;
 
 var pipe = function(point1, point2){
 	this.path = new Path({
-		fillColor: "#123456"
+		fillColor: "red"
 	});
 	this.path.add(point1, point2);
 	this.pointAmount = 2;
