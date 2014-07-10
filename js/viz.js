@@ -1,3 +1,4 @@
+/*
 var decodeBuffer = function (buf) {
 
   var audioContext = window.getAudioContext();
@@ -134,28 +135,61 @@ var effectModule = function(sound){
 }
 	
 }
-
+*/
 //come on, forget about everything
 var mic;
 var pipe;
 var speaker;
 
-var pipe = function(){
-	this.path = new Path();
-}
-pipe.prototype.transport = function(point){
-	if(point){
-		this.path.addSegments(point);
-	}
-	this.path.segments.x ++;
-}
-pipe.prototype.signalSpeaker = function(speakerLoc){
-	
-}
+var pipe = function(point1, point2){
+	this.path = new Path({
+		fillColor: "#123456"
+	});
+	this.path.add(point1, point2);
+	this.pointAmount = 2;
+};
 
-var speaker = new Object();
-speaker.prototype.speakerUp = function(point){
-	if(point0 reaches the speaker){
-		recordeBuffer.play();
+pipe.prototype.feed = function(point){
+	if(point){
+		this.path.insertSegments(this.pointNumber-1, point);
+		this.pointAmount ++;
+	}
+};
+
+pipe.prototype.transport = function(){
+	for(var i = 1; i<this.path.segments.length-2; i++){
+		this.path.segments[i].point.position.x ++;
+	}
+};
+
+pipe.prototype.signalSpeaker = function(callback){
+	if(this.path.segments.length === 2){
+		callback(this);
+		return;
+	}
+	for(var i = 1; i<this.path.segments.length-2; i++){
+		if(this.path.segments[i].point.position.x > this.path.segments[0].point.posiiton.x){
+			this.path.removeSegments(i);
+		}
+	}
+};
+
+var speaker = function(){};
+speaker.prototype.speakerUp = function(){
+	sample.play();
+};
+
+
+/*
+function onMouseDrag(event){
+	if (segment) {
+		segment.point += event.delta;
+		path.smooth();
+	} else if (path) {
+		path.position += event.delta;
 	}
 }
+*/
+
+var pipes = [];
+pipes.push(new pipe(new Point(10,200), new Point(300,200)));

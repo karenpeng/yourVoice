@@ -1,11 +1,11 @@
 (function(window){
 
-  var WORKER_PATH = 'recorderWorker.js';
+  var WORKER_PATH = 'js/lib/recorderWorker.js';
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
     var bufferLen = config.bufferLen || 4096;
-    this.context = source.context;
+    this.context = source.p5s.audiocontext;
     this.node = (this.context.createScriptProcessor ||
                  this.context.createJavaScriptNode).call(this.context,
                                                          bufferLen, 2, 2);

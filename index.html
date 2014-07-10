@@ -9,16 +9,20 @@
       #recordingslist audio { display: block; margin-bottom: 10px; }
     </style>
     <script type="text/javascript" src="js/lib/hsvColor.js"></script>
-    <!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.18/paper-full.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.2.20/p5.min.js"></script>
     <script type="text/javascript" src="js/lib/p5sound.js"></script>
   </head>
   <body>
     <canvas id="canvas" resize></canvas>
+    <button id="record">Record</button>
+    <button id="stop">stop</button>
+    <button id="play">play</button>
   </body>
-  <script type="text/javascript" src="js/recorderWorker.js"></script>
-  <script type="text/javascript" src="js/recorder.js"></script>
+  <script type="text/javascript" src="js/lib/recorder.js"></script>
+  <script type="text/javascript" src="js/lib/recorderWorker.js"></script>
   <script type="text/javascript" src="js/sound.js"></script>
-  <script type="text/paperscript" canvas="canvas" src="js/main.js"></script>
+  <script type="text/paperscript" canvas="canvas" src="js/viz.js"></script>
+  <!--<script type="text/paperscript" canvas="canvas" src="js/main.js"></script>-->
 </html>
