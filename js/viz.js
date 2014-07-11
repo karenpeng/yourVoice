@@ -142,7 +142,9 @@ window.onload = function () {
 		var canvas = document.getElementById('canvas');
 		paper.setup(canvas);
 		init();
-		update();
+		paper.view.onFrame = function(event){
+			update();
+		}
 		paper.view.draw();
 };
 
@@ -154,16 +156,25 @@ var pipe = function (point1, point2) {
 		this.pointAmount = 2;
 };
 
-pipe.prototype.feed = function (point) {
-		if (point) {
-				this.path.insertSegments(this.pointNumber - 1, point);
+pipe.prototype.feed = function (pointY) {
+		if (pointY!==undefined) {
+				this.path.removeSegments(this.path.segments.length-1);
+				this.path.insert(this.pointAmount - 1, new paper.Point(10, pointY));
+				this.path.add(new paper.Point(10, 200));
+				console.log("setting", this.pointAmount - 2);
 				this.pointAmount++;
 		}
+		/*else{
+			for (var i = 0; i< waveform.length; i++){
+        //sketch.vertex(map(i, 0, waveform.length, 0, sketch.width), map(waveform[i], -1, 1, sketch.height, 0));
+      	waveform[i]
+      }
+		}*/
 };
 
 pipe.prototype.transport = function () {
 		for (var i = 1; i < this.path.segments.length - 2; i++) {
-				this.path.segments[i].point.position.x++;
+				this.path.segments[i].point.x++;
 		}
 };
 
@@ -178,6 +189,20 @@ pipe.prototype.signalSpeaker = function (callback) {
 						this.path.removeSegments(i);
 				}
 		}
+};
+
+whatever = function(){
+	this.radius = 40;
+	this.path = new paper.Path.Circle(new paper.Point(100,100), this.radius);
+	this.path.fillColor = "blue";
+	this.countDown = 1200;
+};
+whatever.prototype.update = function(level){
+	//this.radius = amp * 10;
+	//this.path.scale(this.radius);
+	//this.path.scale(1/this.radius);
+	this.path.fillColor = new paper.Color(255,255,0, level);
+	this.countDown --;
 };
 
 var speaker = function () {};
@@ -195,11 +220,38 @@ function onMouseDrag(event){
 	}
 }
 */
+var p, w;
+var counter = 0;
+var i = 0;
 function init() {
-		var pipes = [];
-		pipes.push(new pipe(new paper.Point(10, 200), new paper.Point(300, 200)));
+		p = new pipe(new paper.Point(1300, 200), new paper.Point(10, 200));
+		w = new whatever();
 }
 
 function update() {
+	counter ++;
+	if(recording){
+		w.update(amp.getLevel() * 10);
+		//console.log("updating blue ball with alpha of " + amp.getLevel() * 50);
+	}
+	if (sample && sample.isLoaded()){
+    waveform = sample.getPeaks(1600);
+    //console.log("loaded!");
 
+	if(recorded){
+i++;
+		//for (var i = 0; i< waveform.length; i++){
+        //sketch.vertex(map(i, 0, waveform.length, 0, sketch.width), map(waveform[i], -1, 1, sketch.height, 0));
+      if( i < waveform.length){
+     		p.feed(waveform[i]*300 +200);
+     		p.transport();
+      }else{
+      	console.log("its time to speakUp!")
+      }
+    // }
+
+    }
+
+		
+	}
 }

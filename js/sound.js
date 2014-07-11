@@ -62,6 +62,11 @@ var mic;
 var recorder;
 var fft;
 var sample;
+var amp;
+var recording = false;
+var recorded = false;
+var level;
+var waveform;
 
 function setup() {
   mic = new AudioIn();
@@ -73,6 +78,9 @@ function setup() {
   sample = new SoundFile();
   //sample = getAudioContext();
   //console.log("ok");
+  amp = new Amplitude();
+  amp.setInput(mic);
+  level = amp.getLevel();
 }
 
 $("#record").click(function () {
@@ -80,13 +88,20 @@ $("#record").click(function () {
   //if (pipes !== undefined) {
   //pipes[0].
   //}
+  recording = true;
+  recorded = false;
 });
 
 $("#stop").click(function () {
   recorder.stop();
   //sample.setBuffer(recorder.getBuffer(decodeBuffer));
+  recording = false;
   recorder.getBuffer(decodeBuffer);
-
+  //start transport
+  
+  console.log(waveform);
+  recorded = true;
+  
 });
 
 $("#play").click(function () {
@@ -108,7 +123,7 @@ var decodeBuffer = function (buf) {
   for (var channelNum = 0; channelNum < newBuffer.numberOfChannels; channelNum++) {
     var channel = newBuffer.getChannelData(channelNum);
     channel.set(buf[channelNum]);
-    console.log(buf[channelNum]);
+    //console.log(buf[channelNum]);
   }
   setBuffer(newBuffer);
   //return newBuffer;
