@@ -36,8 +36,8 @@ var outputModule = function(sound){
 }
 
 var view
- 
-var 
+
+var
 
 //viewer
 sketch
@@ -133,49 +133,57 @@ outputModule.prototype.update = function(sound){
 var effectModule = function(sound){
 	//
 }
-	
+
 }
 */
 //come on, forget about everything
 
-var pipe = function(point1, point2){
-	this.path = new Path({
-		fillColor: "red"
-	});
-	this.path.add(point1, point2);
-	this.pointAmount = 2;
+window.onload = function () {
+		var canvas = document.getElementById('canvas');
+		paper.setup(canvas);
+		init();
+		update();
+		paper.view.draw();
 };
 
-pipe.prototype.feed = function(point){
-	if(point){
-		this.path.insertSegments(this.pointNumber-1, point);
-		this.pointAmount ++;
-	}
+var pipe = function (point1, point2) {
+		this.path = new paper.Path({
+				strokeColor: "red"
+		});
+		this.path.add(point1, point2);
+		this.pointAmount = 2;
 };
 
-pipe.prototype.transport = function(){
-	for(var i = 1; i<this.path.segments.length-2; i++){
-		this.path.segments[i].point.position.x ++;
-	}
-};
-
-pipe.prototype.signalSpeaker = function(callback){
-	if(this.path.segments.length === 2){
-		callback(this);
-		return;
-	}
-	for(var i = 1; i<this.path.segments.length-2; i++){
-		if(this.path.segments[i].point.position.x > this.path.segments[0].point.posiiton.x){
-			this.path.removeSegments(i);
+pipe.prototype.feed = function (point) {
+		if (point) {
+				this.path.insertSegments(this.pointNumber - 1, point);
+				this.pointAmount++;
 		}
-	}
 };
 
-var speaker = function(){};
-speaker.prototype.speakerUp = function(){
-	sample.play();
+pipe.prototype.transport = function () {
+		for (var i = 1; i < this.path.segments.length - 2; i++) {
+				this.path.segments[i].point.position.x++;
+		}
 };
 
+pipe.prototype.signalSpeaker = function (callback) {
+		if (this.path.segments.length === 2) {
+				callback(this);
+				return;
+		}
+		for (var i = 1; i < this.path.segments.length - 2; i++) {
+				if (this.path.segments[i].point.position.x > this.path.segments[0].point.posiiton
+						.x) {
+						this.path.removeSegments(i);
+				}
+		}
+};
+
+var speaker = function () {};
+speaker.prototype.speakerUp = function () {
+		sample.play();
+};
 
 /*
 function onMouseDrag(event){
@@ -187,6 +195,11 @@ function onMouseDrag(event){
 	}
 }
 */
+function init() {
+		var pipes = [];
+		pipes.push(new pipe(new paper.Point(10, 200), new paper.Point(300, 200)));
+}
 
-var pipes = [];
-pipes.push(new pipe(new Point(10,200), new Point(300,200)));
+function update() {
+
+}

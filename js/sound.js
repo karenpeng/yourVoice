@@ -63,48 +63,53 @@ var recorder;
 var fft;
 var sample;
 
-function setup(){
+function setup() {
   mic = new AudioIn();
   mic.on();
   mic.amplitude.toggleNormalize();
   fft = new FFT(0.1, 128);
   fft.setInput(mic);
   recorder = new Recorder(mic);
-  sample = loadSound("audio/drum6.mp3");
-  console.log("ok");
+  sample = new SoundFile();
+  //sample = getAudioContext();
+  //console.log("ok");
 }
 
-$("#record").click(function(){
+$("#record").click(function () {
   recorder.record();
+  //if (pipes !== undefined) {
+  //pipes[0].
+  //}
 });
 
-$("#stop").click(function(){
+$("#stop").click(function () {
   recorder.stop();
+  //sample.setBuffer(recorder.getBuffer(decodeBuffer));
   recorder.getBuffer(decodeBuffer);
+
 });
 
-$("#play").click(function(){
+$("#play").click(function () {
   sample.play();
 });
 
-var setBuffer = function(buf){
+var setBuffer = function (buf) {
   sample.buffer = buf;
-  console.log(sample.buffer);
+  //console.log(sample.buffer);
   recorder.clear();
 };
 
 // reset the buffer for this sketch's sample using data from the recorder
-var decodeBuffer = function(buf) {
+var decodeBuffer = function (buf) {
   // create an AudioBuffer of the appropriate size and # of channels,
   // and copy the data from one Float32 buffer to another
   var audioContext = getAudioContext();
   var newBuffer = audioContext.createBuffer(2, buf[0].length, audioContext.sampleRate);
-  for (var channelNum = 0; channelNum < newBuffer.numberOfChannels; channelNum++){
+  for (var channelNum = 0; channelNum < newBuffer.numberOfChannels; channelNum++) {
     var channel = newBuffer.getChannelData(channelNum);
     channel.set(buf[channelNum]);
+    console.log(buf[channelNum]);
   }
   setBuffer(newBuffer);
+  //return newBuffer;
 };
-
-
-
